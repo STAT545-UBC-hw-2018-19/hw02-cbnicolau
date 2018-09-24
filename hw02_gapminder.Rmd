@@ -1,0 +1,154 @@
+---
+title: "hw02_gapminder"
+author: "Coni"
+date: "September 23, 2018"
+output: github_document
+---
+
+# Homework 02: Explore gapminder dataset and use dplyr
+
+Load necessary libraries
+```{r load_libraries, message=FALSE, warning=FALSE}
+library(gapminder)
+library(tidyverse)
+```
+ 
+## General exploration of the object
+Explore the `gapminder` object
+
+```{r gapminder_structure}
+str(gapminder)
+```
+
+`gapminder` is a Tibble. The class is ‘tbl_df’, ‘tbl’ and 'data.frame'. It contains 6 variables: `country` (data type: Factor), `continent` (Factor), `year` (integer), `lifeExp` (life expentancy; numrical data type), `pop` (population; integer), and `gdpPercap` (GDP per capita; numerical data type). We have 1704 observations of these variables.
+
+We can also explore the size of the object with `ncol()` and `nrow()`. Thes may be hekpful is we need the length of these lists as the input of a fuction for example.
+
+```{r gapminder_size}
+ncol(gapminder)
+nrow(gapminder)
+```
+
+`dim()` displays the dimensions of the object (number of rows and columns at the same time)
+
+```{r gapminder_dimensions}
+dim(gapminder)
+```
+
+
+## Exploration of individual variables
+
+For a basic look at all the variables we can use `summary()`
+
+```{r gapminder_summary}
+summary(gapminder)
+```
+
+We see for exaple that the variable `gdpPercap` varies between 241.2 and 113523.1 (units are international dollars; [see here](https://cran.r-project.org/web/packages/gapminder/README.html))
+
+For numerical objects we can use `range()` to display the max and min values in the vector
+
+```{r gdp_range}
+range(gapminder$gdpPercap)
+```
+
+For a categorical object we can use `levels()` to see the categories, or `nlevels()` to get the number of levels 
+
+```{r continent_levels}
+levels(gapminder$continent)
+nlevels(gapminder$continent)
+```
+
+But the best way to visualize data is to make a plot.
+
+## Trends for Chile
+
+Plot the gdp vs time for Chile
+
+```{r Chile_gdp_trend}
+gapminder %>%
+  filter(country == "Chile") %>%
+  ggplot(aes(year, gdpPercap)) +
+  geom_line() +
+  geom_point()
+```
+
+We can also examine how the relationship between gdp and lifeExp changes in time with a path plot 
+
+```{r Chile_pathplot}
+gapminder %>%
+  filter(country == "Chile") %>%
+  ggplot(aes(gdpPercap, lifeExp)) +
+  geom_point() +
+  geom_path(arrow=arrow())
+```
+
+
+### How does the lifeExp changes with gdpPercap?
+
+Let's make a simple scatter plot for all countries
+
+```{r gdp_lifeExp}
+ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(aes(color = continent), #scatter plot, group by continent
+             alpha = 0.25) +
+  scale_x_log10() #log scale in x axis (gdp)
+```
+
+We can see that `lifeExp` is proportional to the `gdpPercap` (which makes sense; higher income countries tend to have longer life expectancy at birth)
+
+## Histogram for Americas
+
+```{r histogram}
+gapminder %>%
+  filter(continent == "Americas") %>%
+  ggplot(aes(lifeExp)) +
+  geom_histogram(bins = 30)
+```
+
+
+
+## gdpPercap vs continent
+
+```{r gdp_vs_continent}
+ggplot(gapminder, aes(x = continent, y = gdpPercap)) +
+  geom_violin() +
+  geom_jitter(position = position_jitter(width = 0.1, height = 0), alpha = 0.2) +
+  scale_y_log10()
+```
+
+We see that Oceania shows the highest mean gdp and the lowest spread (although it also has the least ammount of data)
+Africa has the lowest mean gdp, and Asia has the largest spread.
+
+## gdp and lifeExp vs time
+
+We can plot the trends of `gdpPercap` with time for all countries grouped by continent
+
+```{r gdp_trend_all}
+ggplot(gapminder, 
+       aes(x = year, y = gdpPercap, 
+           group = country, 
+           color = country)) +
+  geom_line(lwd = 1, show.legend = FALSE) + # hide legend (too long)
+  facet_wrap(~ continent) + # one plot per contient
+  scale_color_manual(values = country_colors) +
+  scale_y_log10()
+```
+
+Or do the same for the `lifeExp`
+
+```{r lifeExp_trend_all}
+ggplot(gapminder, 
+       aes(x = year, y = lifeExp, 
+           group = country, 
+           color = country)) +
+  geom_line(lwd = 1, show.legend = FALSE) + # hide legend (too long)
+  facet_wrap(~ continent) + # one plot per continent
+  scale_color_manual(values = country_colors) +
+  scale_y_log10()
+
+```
+
+
+
+
