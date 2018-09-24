@@ -6,13 +6,14 @@ This is Constanza's repository for Homework 02 - STAT545A Fall 2018 edition.
 
 This repo contains:
 1. README file (this one)
-2. File 1 ([here](put link here)
+2. R Markdown file ([here](https://github.com/STAT545-UBC-students/hw02-cbnicolau/blob/master/hw02_gapminder.Rmd)
+2. Markdown file ([here](https://github.com/STAT545-UBC-students/hw02-cbnicolau/blob/master/hw02_gapminder.md)
 
 ### Homework tasks completion (for personal use mostly)
 
 - [x] Readme file
-- [ ] Add links to files in README file
-- [ ] Actual homework
+- [x] Add links to files in README file
+- [x] Data exploration
 - [ ] Submit hw link link to canvas
 - [ ] Reflection
 - [ ] Peer review
