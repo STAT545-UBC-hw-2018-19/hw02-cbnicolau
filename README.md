@@ -14,7 +14,7 @@ This repo contains:
 - [x] Readme file
 - [x] Add links to files in README file
 - [x] Data exploration
-- [ ] Submit hw link link to canvas
-- [ ] Reflection
-- [ ] Peer review
-- [ ] Submit link of peer review to canvas
+- [x] Submit hw link to canvas
+- [x] Reflection
+- [x] Peer review hw02
+- [x] Submit link of peer review to canvas
